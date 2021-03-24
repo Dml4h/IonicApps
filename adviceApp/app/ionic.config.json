@@ -1,0 +1,7 @@
+{
+  "name": "adviceApp/app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
