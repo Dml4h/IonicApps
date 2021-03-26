@@ -1,10 +1,10 @@
 <style scoped>
-/* Center and style the content */
 .header {
   font-family: "HovdenStitch";
-  padding: 2rem;
+  /* padding: 2rem; */
   display: flex;
   text-align: center;
+  font-size: 70%;
 }
 .Home {
   display: flex;
@@ -14,65 +14,123 @@
   background-image: url(/img/BackgroundImg.b4af3dae.jpeg);
   background-size: cover;
   background-position-x: center;
+  /* background-attachment: fixed; */
+  /* background-position-y: unset; */
+  /* height: 109%; */
+  padding: 25%;
+  bottom: transform(-20%);
+  /* width: fit-content; */
+  content-visibility: auto;
+}
+.displayImage {
+  background-image: url(/img/BackgroundImg.b4af3dae.jpeg);
+  background-size: cover;
+  background-position: top;
+  background-origin: content-box;
+}
+#paddingRow {
+  padding-top: 50%;
+}
+.HomeTemo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url("../../public/assets/BackgroundImg.jpeg");
+  background-size: cover;
+  background-position-x: center;
+  background-attachment: fixed;
   height: 100%;
 }
-
-/* Allow the flourishes to visually curve more closely around the text */
-.adviceText {
-  /* max-width: 686px; */
+#textContainer {
+  width: 50%;
+  height: 50% !important;
+  background: bottom;
   position: absolute;
-  font-size: 2rem;
+  bottom: 0;
+}
+/* center text in the bottom-center of the background image  */
+.adviceTxt {
   text-align: center;
+  vertical-align: middle;
+  position: relative;
+  top: 40%;
+  transform: translateY(-50%);
   color: linen;
   font-family: fantasy;
-  /* top: calc(50%); */
-  height: 40%  !important;
-  bottom: 0;
-  /* transform: translateY(80%); */
+  font-size: 100% !important;
+  font-weight: bolder;
 }
-
-/* Animate new advice being added and old advice being removed */
-.fadeIn {
-  animation: fadeIn ease 10s;
+.avatarSvg {
+  background: floralwhite;
 }
-.fadeOut {
-  animation: fadeOut ease 10s;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+#footerRow {
+  text-align: end;
 }
 </style>
-<template>
-  <IonPage>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title class="header">A DAILY DOSE OF ADVICE </ion-title>
-      </ion-toolbar>
-    </ion-header>
 
-    <IonContent>
-      <div class="Home">
-        <ion-card>
-          <p class="adviceText" :class="animationState">{{ advice }}</p>
-        </ion-card>
-        <!-- <img src="../../public/assets/AdobeStock_301304275.jpeg" alt="dots" /> -->
-        <p class="adviceText" :class="animationState">{{ advice }}</p>
-        <!-- <img src="../../public/assets/happyDog.png" alt="happyDog" /> -->
-      </div>
+<template>
+  <IonPage name="Home">
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle class="header">A DAILY DOSE OF ADVICE </IonTitle>
+      </IonToolbar>
+    </IonHeader>
+
+    <IonContent className="ion-padding" color="dark">
+      <IonCard color="light">
+        <IonItem>
+          <IonAvatar slot="start" class="avatarSvg">
+            <img src="../../public/assets/person.svg" />
+          </IonAvatar>
+          <IonLabel>
+            <h3>{{ day }}</h3>
+            <p>{{ formattedDate }}</p>
+          </IonLabel>
+        </IonItem>
+        <IonCardContent>
+          <!-- <IonCol > -->
+          <IonGrid class="displayImage" fixed>
+            <IonRow id="paddingRow"> </IonRow>
+            <IonRow class="align-content-center">
+              <IonCol size="2">
+                <div></div>
+              </IonCol>
+              <IonCol>
+                <IonText>
+                  {{ advice }}
+                </IonText>
+              </IonCol>
+              <IonCol size="2">
+                <div></div>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCardContent>
+        <!-- <IonItemGroup>
+          <IonItemDivider>
+            <IonLabel>A</IonLabel>
+          </IonItemDivider>
+
+          <IonItem>
+            <IonLabel>Angola</IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonLabel>Argentina</IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonLabel>Armenia</IonLabel>
+          </IonItem>
+        </IonItemGroup> -->
+
+        <IonFooter>
+          <IonRow id="footerRow">
+            <IonCol text-center>
+              <Clock></Clock>
+            </IonCol>
+          </IonRow>
+        </IonFooter>
+      </IonCard>
     </IonContent>
   </IonPage>
 </template>
@@ -80,34 +138,75 @@
 <script lang="ts">
 // use HTTP plugin to bypass CORS and make successfull HTTP requests
 import "@capacitor-community/http";
+import { defineComponent } from "vue";
 import { Plugins } from "@capacitor/core";
+import Clock from "./Clock.vue";
+import moment from "moment";
 const { Http } = Plugins;
 
 import {
+  IonAvatar,
+  IonCard,
+  IonCardContent,
+  IonCol,
   IonContent,
+  IonFooter,
+  IonGrid,
   IonHeader,
+  IonLabel,
   IonPage,
+  IonRow,
+  IonText,
   IonTitle,
   IonToolbar,
+  IonItem,
+  // IonItemDivider,
+  // IonItemGroup,
+  // IonItemOption,
+  // IonItemOptions,
+  // IonItemSliding,
 } from "@ionic/vue";
-
-import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Home",
   components: {
+    Clock,
+    IonAvatar,
+    IonCard,
+    IonCardContent,
+    IonCol,
     IonContent,
+    IonFooter,
+    IonGrid,
     IonHeader,
+    IonLabel,
     IonPage,
+    IonRow,
+    IonText,
     IonTitle,
     IonToolbar,
+    IonItem,
+    // IonItemDivider,
+    // IonItemGroup,
   },
-  data: () => ({
+  data: (): {
+    advice: string;
+    animationState: string;
+    hourToFetchNewAdvice: number;
+    lastSaveDate: any;
+    today: Date;
+    day: string;
+    formattedDate: string;
+    currentTime: string;
+  } => ({
     advice: "",
     animationState: "",
     hourToFetchNewAdvice: new Date().getHours(),
     lastSaveDate: null,
     today: new Date(),
+    day: moment().format("dddd"),
+    formattedDate: moment().format("MM/DD/YYYY"),
+    currentTime: moment().format("MM/DD/YYYY"),
   }),
   computed: {
     currentDate(): any {
@@ -117,7 +216,6 @@ export default defineComponent({
     currentHour(): number {
       return this.today.getHours();
     },
-
     hourToEraseCurrentAdvice(): any {
       let oneHourPrior = 0;
 
@@ -131,10 +229,9 @@ export default defineComponent({
   },
 
   // When we'll check if advice data needs to be changed
-  async ionViewWillEnter() {
+  async ionViewWillEnter(): Promise<void> {
     // If we haven't stored an hourToFetchNewAdvice before, calculate and store that and hourToEraseCurrentAdvice
     if (this.hourToFetchNewAdvice) this.hourToFetchNewAdvice = this.currentHour;
-
     this.updateAdvice();
   },
 
