@@ -6,64 +6,35 @@
   text-align: center;
   font-size: 70%;
 }
-.Home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background-image: url(/img/BackgroundImg.b4af3dae.jpeg);
-  background-size: cover;
-  background-position-x: center;
-  /* background-attachment: fixed; */
-  /* background-position-y: unset; */
-  /* height: 109%; */
-  padding: 25%;
-  bottom: transform(-20%);
-  /* width: fit-content; */
-  content-visibility: auto;
-}
+
 .displayImage {
+  /* display: grid; */
   background-image: url(/img/BackgroundImg.b4af3dae.jpeg);
   background-size: cover;
   background-position: top;
   background-origin: content-box;
-}
-#paddingRow {
-  padding-top: 50%;
-}
-.HomeTemo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background-image: url("../../public/assets/BackgroundImg.jpeg");
-  background-size: cover;
-  background-position-x: center;
-  background-attachment: fixed;
-  height: 100%;
-}
-#textContainer {
-  width: 50%;
-  height: 50% !important;
-  background: bottom;
-  position: absolute;
-  bottom: 0;
-}
-/* center text in the bottom-center of the background image  */
-.adviceTxt {
-  text-align: center;
-  vertical-align: middle;
-  position: relative;
-  top: 40%;
-  transform: translateY(-50%);
-  color: linen;
-  font-family: fantasy;
-  font-size: 100% !important;
-  font-weight: bolder;
+  background-repeat: no-repeat;
 }
 .avatarSvg {
   background: floralwhite;
 }
+#paddingRow {
+  padding: 20%;
+  visibility: hidden;
+}
+#textRow {
+  padding-top: 50%;
+  padding-bottom: 10%;
+  text-align: center;
+}
+
+#textContainer {
+  line-height: normal;
+  text-align: center;
+  font-family: cursive;
+}
+/* center text in the bottom-center of the background image  */
+
 #footerRow {
   text-align: end;
 }
@@ -88,40 +59,34 @@
             <p>{{ formattedDate }}</p>
           </IonLabel>
         </IonItem>
-        <IonCardContent>
+        <IonCardContent class="displayImage">
           <!-- <IonCol > -->
-          <IonGrid class="displayImage" fixed>
-            <IonRow id="paddingRow"> </IonRow>
-            <IonRow class="align-content-center">
-              <IonCol size="2">
-                <div></div>
-              </IonCol>
-              <IonCol>
-                <IonText>
-                  {{ advice }}
-                </IonText>
-              </IonCol>
-              <IonCol size="2">
-                <div></div>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCardContent>
-        <!-- <IonItemGroup>
-          <IonItemDivider>
-            <IonLabel>A</IonLabel>
-          </IonItemDivider>
+          <IonRow
+            class="align-content-center ion-padding-vertical"
+            id="paddingRow"
+          >
+            {{ "advice" }}
+          </IonRow>
+          <IonRow
+            class="align-content-center ion-padding-vertical"
+            id="textRow"
+          >
+            <IonCol size="2" class="ion-padding-vertical">
+              <div></div>
+            </IonCol>
+            <IonCol
+              class="ion-text-md-center ion-text-capitalize ion-padding-vertical"
+            >
+              <ion-text size="auto" id="textContainer">
+                {{ advice }}
+              </ion-text>
+            </IonCol>
 
-          <IonItem>
-            <IonLabel>Angola</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Argentina</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Armenia</IonLabel>
-          </IonItem>
-        </IonItemGroup> -->
+            <IonCol size="2" class="ion-padding-vertical">
+              <div></div>
+            </IonCol>
+          </IonRow>
+        </IonCardContent>
 
         <IonFooter>
           <IonRow id="footerRow">
@@ -151,20 +116,13 @@ import {
   IonCol,
   IonContent,
   IonFooter,
-  IonGrid,
   IonHeader,
   IonLabel,
   IonPage,
   IonRow,
-  IonText,
   IonTitle,
   IonToolbar,
   IonItem,
-  // IonItemDivider,
-  // IonItemGroup,
-  // IonItemOption,
-  // IonItemOptions,
-  // IonItemSliding,
 } from "@ionic/vue";
 
 export default defineComponent({
@@ -177,12 +135,11 @@ export default defineComponent({
     IonCol,
     IonContent,
     IonFooter,
-    IonGrid,
     IonHeader,
+    // IonIcon,
     IonLabel,
     IonPage,
     IonRow,
-    IonText,
     IonTitle,
     IonToolbar,
     IonItem,
@@ -197,7 +154,6 @@ export default defineComponent({
     today: Date;
     day: string;
     formattedDate: string;
-    currentTime: string;
   } => ({
     advice: "",
     animationState: "",
@@ -206,7 +162,6 @@ export default defineComponent({
     today: new Date(),
     day: moment().format("dddd"),
     formattedDate: moment().format("MM/DD/YYYY"),
-    currentTime: moment().format("MM/DD/YYYY"),
   }),
   computed: {
     currentDate(): any {
@@ -246,7 +201,7 @@ export default defineComponent({
         this.resetAnimationState();
 
         //save fetched advice
-        this.advice = JSON.parse(data).slip.advice.toUpperCase();
+        this.advice = JSON.parse(data).slip.advice;
 
         //update variable
         this.lastSaveDate = this.currentDate;
